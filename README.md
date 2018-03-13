@@ -16,7 +16,7 @@ Epigenetic and mutational landscape in head and neck squamous cell carcinoma
 2. **Second function _permutation_sum_:**
     * Sum the number of bases for each permutation
   
-3. **Third function _technology_:**
+3. **Third function _permhist_:**
     * Make a histogram of the overlap bases for each permutation;
     * Calculated p-values comparing the distribution under the permutation-based null to the observed values
 

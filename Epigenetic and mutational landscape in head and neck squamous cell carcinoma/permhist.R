@@ -20,6 +20,7 @@ permhist<-function(permoverlap,obsoverlap,title,position,num){
       theme(plot.title = element_text(hjust = 0.5,size=22,face="bold"))+
       theme(axis.text=element_text(size=16),axis.title=element_text(size=20,face="bold"))
   }
+  
   else if (position=="left"){
     
     ggplot(permoverlap,aes(permoverlap))+geom_histogram()+geom_vline(xintercept=obsoverlap,colour="red",linetype="dashed")+
