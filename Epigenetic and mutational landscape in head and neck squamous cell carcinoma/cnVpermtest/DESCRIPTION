@@ -1,0 +1,11 @@
+Package: cnVpermtest
+Title: What The Package Does (one line, title case required)
+Version: 0.1
+Authors@R: person("Yi", "Chen", email = "cychenyi57@gmail.com",
+                  role = c("aut", "cre"))
+Description: The description of a package is usually long,
+    spanning multiple lines. The second and subsequent lines
+    should be indented, usually with four spaces.
+Depends: R (>= 3.1.0)
+License: What license is it under?
+LazyData: true
