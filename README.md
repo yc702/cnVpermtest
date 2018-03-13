@@ -14,7 +14,7 @@ Epigenetic and mutational landscape in head and neck squamous cell carcinoma
         +For specific Amplification and Deletion, we have a seperate function _tcgacnv_ampdel_
 
 2. **Second function _permutation_sum_:**
-    * Sum the number of bases for each permutation
+    * Sum the number of overlap bases for each permutation
   
 3. **Third function _permhist_:**
     * Make a histogram of the overlap bases for each permutation;
