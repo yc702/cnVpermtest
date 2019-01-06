@@ -9,6 +9,8 @@
 #' @keywords cnVpermtest
 #' @export
 #' @examples
+#' @import doParallel
+#' @import ggplot2
 #' tcgacnv()
 
 tcgacnv<-function(cnvdatalist,segmentmean_name,segment_cutoff,permtime,core){
