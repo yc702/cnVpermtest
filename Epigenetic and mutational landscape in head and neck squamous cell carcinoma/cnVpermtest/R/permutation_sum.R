@@ -39,7 +39,7 @@ permutation_sum <- function(data1,data2,cnadata){
   overlap <- lapply(cnadata, function(x) lapply(x, function(x) intersect(overlap12, x)))
   num.base <- lapply(overlap, function(x) lapply(x, function(x) sum(width(x))))
   n1 <- sapply(num.base, function(x) sum(unlist(x)))
-  n1
+
   return(list("n1"=n1, "overlap12"=overlap12))
   
   
