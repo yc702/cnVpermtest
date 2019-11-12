@@ -9,6 +9,7 @@
 #' @keywords cnVpermtest
 #' @export
 #' @examples
+#' @import ggplot2
 #' permhist()
 
 permhist<-function(permoverlap,obsoverlap,title,position,num){
