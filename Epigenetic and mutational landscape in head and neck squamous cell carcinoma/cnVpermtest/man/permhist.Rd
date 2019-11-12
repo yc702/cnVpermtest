@@ -4,23 +4,23 @@
 \alias{permhist}
 \title{A function to make histogram for CNA permutation overlap with Super Enhancers}
 \usage{
-permhist(permoverlap, obsoverlap, title, position, num)
+permhist(permoverlap, obsoverlap, title, position = "right", num)
 }
 \arguments{
-\item{permoverlap}{A vector bases of permutated CNA overlaps with Super Enhancers.}
+\item{permoverlap}{A dataframe with first column as vector bases of permutated CNA overlaps with Super Enhancers.}
 
 \item{obsoverlap}{The observed bases of CNA segment overlap with Super Enhancers}
 
 \item{title}{Title of the histogram}
 
-\item{position}{Position of the lable of observed overlap value, right or left of the marked dashed line}
+\item{position}{Position of the lable of observed overlap value, right or left of the marked dashed line, default is Right
+\itemize{
+        \item{\code{"right"}}{ the label of observed value will be positioned to the right}
+        \item{\code{"left"}} { the label of observed value will be positioned to the right}
+    }}
 
 \item{num}{Number of bases to be away from the marked dashed line}
 }
 \description{
 This function allows you to make histogram for CNA permutation.
 }
-\examples{
-permhist()
-}
-\keyword{cnVpermtest}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tcgacnv.R
 \name{tcgacnv}
 \alias{tcgacnv}
-\title{A CNA permutation function}
+\title{A CNA permutation function for CNA}
 \usage{
 tcgacnv(cnvdatalist, segmentmean_name, segment_cutoff, permtime, core)
 }
@@ -11,16 +11,12 @@ tcgacnv(cnvdatalist, segmentmean_name, segment_cutoff, permtime, core)
 
 \item{segmentmean_name}{The name of CNA segment mean column in the cnvdatalist}
 
-\item{segment_cutoff}{Cut off value of CNA segments in CNA data lists}
+\item{segment_cutoff}{Cut off value (positive or negative) of CNA segments in CNA data lists}
 
-\item{permtime}{Permutation time}
+\item{permtime}{Permutation times}
 
 \item{core}{Go parallel number of cores using}
 }
 \description{
-This function allows you to do permutation of CNA segments.
+This function allows you to do permutation of CNA segments for CNA.
 }
-\examples{
-tcgacnv()
-}
-\keyword{cnVpermtest}

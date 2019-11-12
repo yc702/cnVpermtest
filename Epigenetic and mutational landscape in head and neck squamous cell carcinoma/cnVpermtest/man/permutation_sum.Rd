@@ -11,12 +11,8 @@ permutation_sum(data1, data2, cnadata)
 
 \item{data2}{Super Enhancer Sample Two information about chromosome name, start and end position}
 
-\item{cnadata}{A list of permutation CNA results}
+\item{cnadata}{A list of permuted CNA results}
 }
 \description{
 This function allows you to make get the overlap of SE and permuted CNA
 }
-\examples{
-permutation_sum()
-}
-\keyword{cnVpermtest}
