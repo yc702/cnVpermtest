@@ -34,10 +34,11 @@ permutation_sum <- function(data1,data2,cnadata){
   
   hits <- findOverlaps(gr.1s, gr.2s)
   overlap12 <- intersect(gr.1s, gr.2s)
-  overlap <- lapply(cnadata, function(x) lapply(x, function(x) intersect(overlap12, x)))
-  num.base <- lapply(overlap, function(x) lapply(x, function(x) sum(width(x))))
-  n1 <- sapply(num.base, function(x) sum(unlist(x)))
-  return(list("n1"=n1, "overlap12"=overlap12))
+  overlap12
+  # overlap <- lapply(cnadata, function(x) lapply(x, function(x) intersect(overlap12, x)))
+  # num.base <- lapply(overlap, function(x) lapply(x, function(x) sum(width(x))))
+  # n1 <- sapply(num.base, function(x) sum(unlist(x)))
+  # return(list("n1"=n1, "overlap12"=overlap12))
   
   
 }
