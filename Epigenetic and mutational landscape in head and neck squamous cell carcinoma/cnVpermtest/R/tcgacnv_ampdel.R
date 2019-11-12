@@ -10,9 +10,16 @@
 #' @export
 #' @examples
 #' @import doParallel
+#' @import foreach
 #' @import ggplot2
 #' @import GenomicRanges
 #' tcgacnv_ampdel()
+
+
+library(doParallel)
+library(foreach)
+library(ggplot2)
+library(GenomicRanges)
 
 tcgacnv_ampdel<-function(cnvdatalist,segmentmean_name,segment_cutoff,permtime,core){
   ## Classify if studying amplification or deletion;

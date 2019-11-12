@@ -12,8 +12,14 @@
 #' @import doParallel
 #' @import foreach
 #' @import ggplot2
+#' @import GenomicRanges
 #' tcgacnv_amp()
 
+
+library(doParallel)
+library(foreach)
+library(ggplot2)
+library(GenomicRanges)
 ## Only consider amplification
 tcgacnv_amp <- function(cnvdatalist,segmentmean_name,segment_cutoff,permtime,core){
   

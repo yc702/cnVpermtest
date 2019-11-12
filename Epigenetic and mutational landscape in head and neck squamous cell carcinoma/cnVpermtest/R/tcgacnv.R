@@ -15,6 +15,9 @@
 #' tcgacnv()
 
 ## Consider amplification and deletion together;
+library(doParallel)
+library(foreach)
+library(ggplot2)
 
 tcgacnv<-function(cnvdatalist,segmentmean_name,segment_cutoff,permtime,core){
   

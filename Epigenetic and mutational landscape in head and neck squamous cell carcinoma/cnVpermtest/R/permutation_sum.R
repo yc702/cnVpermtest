@@ -10,6 +10,9 @@
 #' @import GenomicRanges
 #' permutation_sum()
 
+
+library(GenomicRanges)
+
 permutation_sum <- function(data1,data2,cnadata){
   
   col <- c("REGION_ID","CHROM","START","STOP",
