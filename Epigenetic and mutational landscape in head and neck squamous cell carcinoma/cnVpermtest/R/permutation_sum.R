@@ -1,14 +1,14 @@
-#' A function that help you make get the overlap of SE and permuted CNA excluding chromosome X and Y 
+#' A function that help you make get the overlap of SE and permuted CNA excluding chromosome X and Y
 #'
 #' This function allows you to make get the overlap of SE and permuted CNA
-#' @param data1 Super Enhancer Sample One information about chromosome name, start and end position with columns "REGION_ID","CHROM","START","STOP","NUM_LOCI","CONSTITUENT_SIZE","Intensity","Intensity2","EnhancerRank1","Overlap_Genes","Proximal_Genes","Closest_Gene","EnhancerRank2","IsSuper" 
-#' @param data2 Super Enhancer Sample Two information about chromosome name, start and end position with columns "REGION_ID","CHROM","START","STOP","NUM_LOCI","CONSTITUENT_SIZE","Intensity","Intensity2","EnhancerRank1","Overlap_Genes","Proximal_Genes","Closest_Gene","EnhancerRank2","IsSuper" 
+#' @param data1 Super Enhancer Sample One information about chromosome name, start and end position
+#' @param data2 Super Enhancer Sample Two information about chromosome name, start and end position
 #' @param cnadata A list of permutation CNA results
-#' @keywords cnVpermtest
+#' @keywords SE overlap with CNA permutation
 #' @export
 #' @examples
-#' @import GenomicRanges
 #' permutation_sum()
+
 
 
 permutation_sum <- function(data1,data2,cnadata){

@@ -1,7 +1,7 @@
 #' A function to make histogram for CNA permutation overlap with Super Enhancers
 #'
 #' This function allows you to make histogram for CNA permutation.
-#' @param permoverlap A vector bases of permutated CNA overlaps with Super Enhancers.
+#' @param permoverlap A dataframe with first column as vector bases of permutated CNA overlaps with Super Enhancers.
 #' @param obsoverlap The observed bases of CNA segment overlap with Super Enhancers 
 #' @param title Title of the histogram
 #' @param position Position of the lable of observed overlap value, right or left of the marked dashed line
@@ -12,10 +12,10 @@
 #' @import ggplot2
 #' permhist()
 
-permhist<-function(permoverlap,obsoverlap,title,position,num){
+permhist<-function(permoverlap,obsoverlap,title,position="right",num){
   
   if (position =="right"){
-    ggplot(permoverlap,aes(permoverlap))+geom_histogram()+geom_vline(xintercept=obsoverlap,colour="red",linetype="dashed")+
+    ggplot(data.frame(permoverlap[,1]),aes(permoverlap[,1]))+geom_histogram()+geom_vline(xintercept=obsoverlap,colour="red",linetype="dashed")+
       geom_text(y=20,x=obsoverlap-num,cex=6,label=paste("observed value is",obsoverlap),colour="red")+
       labs(x="Permutation Overlap Bases")+ggtitle(title)+
       theme(plot.title = element_text(hjust = 0.5,size=22,face="bold"))+
@@ -23,7 +23,7 @@ permhist<-function(permoverlap,obsoverlap,title,position,num){
   }
   else if (position=="left"){
     
-    ggplot(permoverlap,aes(permoverlap))+geom_histogram()+geom_vline(xintercept=obsoverlap,colour="red",linetype="dashed")+
+    ggplot(data.frame(permoverlap[,1]),aes(permoverlap[,1]))+geom_histogram()+geom_vline(xintercept=obsoverlap,colour="red",linetype="dashed")+
       geom_text(y=20,x=obsoverlap-num,cex=6,label=paste("observed value is",obsoverlap),colour="red")+
       labs(x="Permutation Overlap Bases")+ggtitle(title)+
       theme(plot.title = element_text(hjust = 0.5,size=22,face="bold"))+
