@@ -20,3 +20,9 @@ Epigenetic and mutational landscape in head and neck squamous cell carcinoma;
     * Make a histogram of the overlap bases for each permutation;
     * Calculated p-values comparing the distribution under the permutation-based null to the observed values
 
+### Test of the package:
+
+* You can download the package install_github("yc702/cnVpermtest/Epigenetic and mutational landscape in head and neck squamous cell carcinoma/cnVpermtest")
+* You can test the package using sample code: package_testing.Rmd
+
+ 

@@ -1,0 +1,168 @@
+---
+title: "HPV+ permutation with super enhancer individual with 0.3,0.67,1 as cutoff amplification and deletion"
+author: "Yi Chen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r results='hide', message=FALSE, warning=FALSE, echo=FALSE}
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+options( warn = -1 )
+```
+Loading packages
+```{r results='hide', message=FALSE, warning=FALSE, echo=FALSE}
+library(readr)
+library(foreach)
+library(doParallel)
+library(readxl)
+library(ggplot2)
+library(GenomicRanges)
+library(devtools)
+install_github("yc702/cnVpermtest/Epigenetic and mutational landscape in head and neck squamous cell carcinoma/cnVpermtest")
+set.seed(300)
+```
+
+
+
+### Considering only HPV+ samples
+#### Data Preparation
+<br />**1. Separate 117 files using their known HPV type**
+<br />**2. For duplicated ones, only keep ones comparing with 10A normals.**
+<br />total 17 have 11A, except from the duplicated, there are 8 of them are from 11A
+<br />**3. Select HPV+ CNA samples and does not know whether it is from WGS or not**
+<br />**4. Choose samples with segment mean larger than 0.3, 0.67 and 1 separately for deletion and amplification**
+<br />**5. Perform permutation by sample names and chromosome range**
+
+
+**TCGA HPV sample and CNA sample description**
+<br /> Total number of TCGA HPV samples is 279
+<br /> Number of samples in HPV+ dataset from Nature paper: 36
+<br /> Common samples from CNA and TCGA HPV sample number is 8
+
+
+```{r ,warning=FALSE, echo=FALSE}
+## Find barcode for HPV+ TCGA Nature paper
+HPV.data <- read_excel("nature14129-s2/nature14129-s2/1.2.xlsx")
+HPV.positive<-HPV.data[HPV.data$Final_HPV_Status=="Positive",]
+name.positive<-HPV.positive$Barcode
+
+
+name = c("Total TCGA HPV","TCGA HPV+","Common from CNA and HPV")
+number<-c(279,36,8)
+total<-matrix(number,ncol=1)
+rownames(total)<-name
+margin.table(total,1)
+
+```
+
+```{r ,warning=FALSE, echo=FALSE}
+## Get all the TCGA HPV+ CNV sample names
+setwd("../../data/CNVs HNSCC from TCGA portal")
+temp<-list.files()[1:117]
+## Barcode with the first 12 character to match with TCGA nature paper
+name12<-unname(sapply(temp,function(x) substr(list.files(x)[grep("*.tsv",list.files(x))],1,12)))
+name<-unname(sapply(temp,function(x) list.files(x)[grep("*.tsv",list.files(x))]))
+
+## Find the duplicated names
+duplicate.name<-name12[duplicated(name12)]
+## Keep only 10A ones
+duplicate.name<-name[sapply(duplicate.name, function(x) grep(x,name))]
+temp<-temp[sapply(duplicate.name[grep("11A",duplicate.name)], function(x) -grep(x,name))]
+name12<-name12[sapply(duplicate.name[grep("11A",duplicate.name)], function(x) -grep(x,name))]
+name<-name[sapply(duplicate.name[grep("11A",duplicate.name)], function(x) -grep(x,name))]
+
+## Only 8 are in the TCGA sample are positive
+temp.positive<-temp[unlist(sapply(name.positive, function(x) grep(x,name12)))]
+name.full<-name[unlist(sapply(name.positive, function(x) grep(x,name12)))]
+
+```
+
+<br /> **Permutation Test for HPV+ for 300 times**
+Find all the HPV+ CNV samples
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+## Read in TCGA HPV+ HNSCC CNA samples
+setwd("../../data/CNVs HNSCC from TCGA portal")
+files<-unname(sapply(temp.positive,function(x) paste0("./",x,"/",list.files(x)[grep("*.tsv",list.files(x))])))
+listdata<-lapply(files,function(x) read_delim(x,  "\t", escape_double = FALSE, trim_ws = TRUE))
+listdata<-  mapply(FUN = function(x,Sample){cbind(x,Sample)},listdata, name.full,
+                   SIMPLIFY = FALSE)
+
+
+```
+### 0.3 as cutoff
+#### Using HPV+ HNSC cell line Super Enhancer as comparison
+
+<br /> **Find overlap with HPV+ cell lines samples using permutation results**
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+setwd("../../data/CNVs HNSCC from TCGA portal")
+
+data1s<-read.table("../../data/EnhancerCalls/rose_6_samples_narowpeaks_with_genes/roseout//1_h3k27ac//1_h3k27ac_peaks_SuperEnhancers_ENHANCER_TO_GENE.txt",sep="\t",skip=1,header=FALSE)
+data2s<-read.table("../../data/EnhancerCalls/rose_6_samples_narowpeaks_with_genes/roseout//2_h3k27ac//2_h3k27ac_peaks_SuperEnhancers_ENHANCER_TO_GENE.txt",sep="\t",skip=1,header=FALSE)
+```
+
+##### HPV+ HNSCC cell line Sample 1: amplification
+<br /> **Calculate observed sum of overlap bases**
+```{r, echo=FALSE}
+
+observetcgacnv.amp<-cnVpermtest::tcgacnv_ampdel(listdata,"Segment_Mean",0.3,300,20)
+gr.cnv<-lapply(observetcgacnv.amp$tcga.cnv,function(x) GRanges(as.character(x$Chromosome),ranges=IRanges(x$Start,x$End)))
+
+## Total number of overlaps
+overlap12<-cnVpermtest::permutation_sum(data1s,data1s,observetcgacnv.amp$df)$overlap12
+n1<-cnVpermtest::permutation_sum(data1s,data2s,observetcgacnv.amp$df)$n1
+
+overlap.cnv<-lapply(gr.cnv, function(x)intersect(overlap12, x))
+num.base.cnv<-lapply(overlap.cnv, function(x)sum(width(x)))
+n2<-sum(unlist(num.base.cnv))
+n2
+```
+
+
+**Plot histogram of the 300 permutation for HPV+ cell lines Sample 1**
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+n1[(length(n1)+1)]<-n2
+n1<-data.frame(n1)
+cnVpermtest::permhist(n1,n2,"Histogram of 300 permutation for HPV+ cell lines Sample 1 Amplification",position = "right",10000000)
+
+```
+
+Calculate the p value
+```{r, echo=FALSE}
+(length(n1[n1>n2])+1)/300
+```
+
+
+##### HPV+ HNSCC cell line Sample 1: deletion
+<br /> **Calculate observed sum of overlap bases**
+```{r, echo=FALSE}
+
+observetcgacnv.del<-cnVpermtest::tcgacnv_ampdel(listdata,"Segment_Mean",-0.3,300,20)
+gr.cnv<-lapply(observetcgacnv.del$tcga.cnv,function(x) GRanges(as.character(x$Chromosome),ranges=IRanges(x$Start,x$End)))
+
+## Total number of overlaps
+overlap12<-cnVpermtest::permutation_sum(data1s,data1s,observetcgacnv.del$df)$overlap12
+n1<-cnVpermtest::permutation_sum(data1s,data2s,observetcgacnv.del$df)$n1
+
+overlap.cnv<-lapply(gr.cnv, function(x)intersect(overlap12, x))
+num.base.cnv<-lapply(overlap.cnv, function(x)sum(width(x)))
+n2<-sum(unlist(num.base.cnv))
+n2
+```
+
+
+**Plot histogram of the 300 permutation for HPV+ cell lines Sample 1**
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+n1[(length(n1)+1)]<-n2
+n1<-data.frame(n1)
+
+cnVpermtest::permhist(n1,n2,"Histogram of 300 permutation for HPV+ cell lines Sample 1 Deletion",position = "right",10000000)
+
+```
+
+
+Calculate the p value
+```{r, echo=FALSE}
+(length(n1[n1>n2])+1)/300
+```
+
