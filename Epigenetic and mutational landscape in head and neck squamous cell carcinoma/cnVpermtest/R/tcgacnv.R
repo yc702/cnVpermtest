@@ -5,7 +5,7 @@
 #' @param segmentmean_name The name of CNA segment mean column in the cnvdatalist
 #' @param segment_cutoff Cut off value (positive or negative) of CNA segments in CNA data lists
 #' @param permtime Permutation times
-#' @param core Go parallel number of cores using
+#' @param core Do parallel number of cores using
 #' @export
 #' @examples
 #' @import doParallel
